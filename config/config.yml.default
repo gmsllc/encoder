@@ -1,0 +1,78 @@
+db_settings:
+    host: 127.0.0.1
+    username: foo
+    password: bar 
+    dbname: encoding_queue 
+
+client_settings:
+    max_redirects: 0,
+    timeout: 60,
+    keepalive: true,
+
+xml_data:
+    api_url:     "https://manage.encoding.com"
+    username:    <your username here>
+    userid:      <your userid> 
+    userkey:     <your userkey>
+    action:      AddMedia
+    notify_url:  <your notify url>
+    notify_port: <your notify port>
+    instant:     true
+    source:      <your source file>
+    destination: <your destination file>
+    format:
+        output: wmv 
+
+good_xml_response: >
+  <result>
+    <mediaId>321</mediaId>
+    <source>some_source</source>
+    <status>done_done</status>
+    <description>funky done description</description>
+    <format>
+      <output>3DG</output>
+      <destination>coolplace</destination>
+      <destination_status>SAVED</destination_status>
+    </format>
+  </result>
+
+bad_xml_response: >
+  <result>
+    <mediaId>321</mediaId>
+    <source>some_source</source>
+    <status>Error</status>
+    <description>funky done description</description>
+    <format>
+      <output>3DG</output>
+      <destination>coolplace</destination>
+      <destination_status>
+          Error (All your ships we have)
+      </destination_status>
+      <suggestion>Buy more ships to find</suggestion>
+    </format>
+  </result>
+
+sql:
+    create_table_queue: >
+        DROP TABLE IF EXISTS queue;
+        CREATE TABLE queue(
+            media_id INTEGER, 
+            source TEXT, 
+            destination TEXT, 
+            priority INTEGER, 
+            status TEXT
+        )
+
+    add_to_queue: >
+        INSERT INTO queue (media_id, source, destination, priority, status) 
+        VALUES (?, ?, ?, ?, ?)
+
+    clean_out_queue: >
+        DROP TABLE queue
+
+    get_queued_video: >
+        SELECT source, destination, priority, status 
+        FROM queue limit 1
+
+    update_status: >
+        UPDATE queue set status = :status WHERE media_id = :media_id 
