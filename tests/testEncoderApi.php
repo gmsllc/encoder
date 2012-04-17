@@ -15,16 +15,10 @@ class TestEncoderApi extends Zend_Test_PHPUnit_ControllerTestCase {
         $this->db = new PDO('sqlite:test.sqlite');
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $config_object = new Configuration();
-<<<<<<< HEAD
-        $config = $config_object->getConfiguration();
-        $url = $config['xml_data']['api_url'];
-        $http_client = new Zend_Http_Client($url, $settings);
-        $this->encoder = new Encoder($http_client, $config_object, $this->db
-        );
-=======
-        $this->encoder = new Encoder($config_object, $this->db);
->>>>>>> 2d2fb0c4f3940fbaa9f8d0d84fd68cd092702bcf
         $this->config = $config_object->getConfiguration();
+        $url = $this->config['xml_data']['api_url'];
+        $http_client = new Zend_Http_Client($url, $this->config['client_settings']);
+        $this->encoder = new Encoder($this->config, $http_client, $this->db);
         $this->sql = $this->config['sql'];
         $this->db->exec($this->sql['create_table_queue']);
     }
