@@ -29,33 +29,18 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $this->db->exec($this->sql['clean_out_queue']);
     }
 
-<<<<<<< HEAD
-    public function testStoresGoodInfoCorrectly(){
-        $xml = $this->config['good_xml_response'];
-        list($media_id, $status) = $this->responder->handleResponse($xml);
-        $stmt = $this->db->prepare('select media_id, status from queue');
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-=======
     public function testStoresInfoInDatabaseCorrectly(){
         $xml = $this->config['good_xml_response'];
         list($media_id, $status) = $this->responder->handleResponse($xml);
-        echo 'MEDIA ID -> ' . $media_id . ' STATUS -> ' . $status . ' ... ';
         $stmt = $this->db->prepare('select media_id, status from queue');
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        echo $result['status'];
->>>>>>> 2d2fb0c4f3940fbaa9f8d0d84fd68cd092702bcf
         $actual = $result['media_id'];
         $expected = 321;
         $this->assertEquals($actual, $expected);
     }
 
-<<<<<<< HEAD
-    public function testStoresErrorInfoCorrectly(){
-=======
     public function testResponseWhenThereIsAnError(){
->>>>>>> 2d2fb0c4f3940fbaa9f8d0d84fd68cd092702bcf
         $xml = $this->config['bad_xml_response'];
         $this->responder->handleResponse($xml);
         $stmt = $this->db->prepare('select status from queue');
