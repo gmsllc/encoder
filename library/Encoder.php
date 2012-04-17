@@ -9,12 +9,8 @@ class Encoder {
     protected $config;
     protected $http_client;
 
-    public function __construct(
-        Configuration $config, 
-        $http_client,
-        $db=false
-    ){
-        $this->config = $config->getConfiguration();
+    public function __construct($config, $http_client, $db){
+        $this->config = $config;
         $this->setupDbConnection($db);
         $this->setUpHttpClient();
     }
@@ -61,7 +57,7 @@ class Encoder {
 
     protected function saveRequestInDb($response, $source, $destination, $priority){
         $xml = new SimpleXmlElement($response);
-        $media_id = $xml->MediaID;
+        $media_id = (int)$xml->MediaID;
         $this->addToQueue($media_id, $source, $destination, $priority);
         return $media_id;
     }
