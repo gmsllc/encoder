@@ -14,7 +14,8 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $this->sql = $this->config['sql'];
         $this->db = new PDO('sqlite:test.sqlite');
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->responder = new Responder($this->config, $this->db);
+        $this->log_file = 'test.log';
+        $this->responder = new Responder($this->config, $this->db, $this->log_file);
         $this->createTableAndMockData();
     }
 
@@ -50,5 +51,25 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $expected = 'Error';
         $this->assertEquals($actual, $expected);
     }
+
+    public function testLoggingWorks(){
+        $this->cleanTestLogFile();
+        $this->testStoresInfoInDatabaseCorrectly();
+        $expected = "MediaId: 321, Status: done_done";
+        $actual = $this->getLogLine();
+        $this->assertEquals($expected, $actual);  
+        $this->cleanTestLogFile();
+    }
+
+    protected function cleanTestLogFile(){
+        file_put_contents($this->log_file, '');
+    }
+
+    protected function getLogLine(){
+        $line = file_get_contents($this->log_file);
+        $parts = explode(']', $line);
+        return trim($parts[1]);
+    }
+
 
 }
