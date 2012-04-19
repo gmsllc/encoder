@@ -35,5 +35,49 @@ Responder
 > beforehand from the encoder.  
 
 
+Storage
+-------
+
+> Currently the library expects mysql to be used to store data using the following
+> schema:
+
+        CREATE TABLE queue(
+            int media_id, 
+            text source, 
+            text destination, 
+            int priority, 
+            varchar(20) status
+        )
+
+
+Usage
+-----
+
+> Make a copy of the config.yml.default file and call it config.yml. With the user
+> credentials provided by encoding.com change the values inside <...> brackets.
+> This needs to be done before attempting to use the library.
+
+Example Usage
+-------------
+
+> Encoder
+> -------
+
+        // set up the configuration object
+
+        $conf_ob = new Configuration();
+        $config = $conf_ob->getConfiguration();
+
+        // set up the http client
+
+        $url = $config['xml_data']['api_url'];
+        $http_client = new Zend_Http_Client($url, $settings);
+
+        // create an instance of the encoder
+
+        $encoder = new Encoder($conf, $http_client, $db);
+        $response = $encoder->requestEncoding('some/source', 'some/destination', 'priority');
+
+
 
 
