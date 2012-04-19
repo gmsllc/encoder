@@ -1,5 +1,5 @@
-Readme
-======
+Dreamstar Cash encoding library for encoding.com API services
+=============================================================
 
 > A PHP library that contains a number of classes to allow the use
 > of the [API provided by encoding.com] (http://encoding.com/api).  The library comes in two 
