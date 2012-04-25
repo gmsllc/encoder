@@ -1,11 +1,6 @@
 <?php
 
-$library = "/Users/lloyd/zendlibrary";
-$tests_folder = dirname(__FILE__);
-$current_path = get_include_path();
-
-set_include_path(implode(':', array(
-    $library,
-    $tests_folder,
-    $current_path
-)));
+$zend = dirname(__FILE__)."/Zend";
+$tests = dirname(__FILE__);
+$path = get_include_path();
+set_include_path(implode(':', array($zend, $tests, $path)));

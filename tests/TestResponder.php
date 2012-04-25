@@ -1,11 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', true);
-require_once dirname(__FILE__) . "/TestBootstrap.php";
+
+require_once dirname(__FILE__) . "/testBootstrap.php";
 require_once "Zend/Test/PHPUnit/ControllerTestCase.php"; 
 require_once dirname(dirname(__FILE__))."/library/Responder.php";
 require_once dirname(dirname(__FILE__))."/library/Configuration.php";
-
 class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
 
     public function setUp(){
