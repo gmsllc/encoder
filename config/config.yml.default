@@ -19,9 +19,9 @@ xml_data:
     notify_port: <your notify port>
     instant:     true
     source:      <your source file>
-    destination: <your destination file>
     format:
         output: wmv 
+        destination: <your destination file>
 
 good_xml_response: >
   <result>
