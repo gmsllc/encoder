@@ -1,6 +1,6 @@
-CREATE DATABASE if NOT EXISTS encoding_queue;
+USE encoding_queue;
 
-DROP TABLE if EXISTS queue;
+DROP TABLE IF EXISTS queue;
 
 CREATE TABLE queue(
     media_id int NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE queue(
     status varchar(30) NOT NULL
 );
 
-DROP TABLE if EXISTS provider;
+DROP TABLE IF EXISTS provider;
 
 CREATE TABLE provider(
     id int NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE provider(
     Primary KEY (id)
 );
 
-DROP TABLE if EXISTS response_mapper;
+DROP TABLE IF EXISTS response_mapper;
 
 CREATE TABLE mapper(
     provider_id int NOT NULL,
