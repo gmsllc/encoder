@@ -67,7 +67,7 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
     public function testLoggingWorks(){
         $this->cleanTestLogFile();
         $this->testStoresInfoInDatabaseCorrectly();
-        $expected = "MediaId: 321, Status: done_done";
+        $expected = "MediaId: 321, Status: error";
         $actual = $this->getLogLine();
         $this->assertEquals($expected, $actual);  
         $this->cleanTestLogFile();
