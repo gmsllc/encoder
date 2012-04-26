@@ -16,13 +16,23 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->log_file = 'test.log';
         $this->responder = new Responder($this->config, $this->db, $this->log_file);
-        $this->createTableAndMockData();
+        $this->createTablesAndMockData();
     }
 
-    protected function createTableAndMockData(){
+    protected function createTablesAndMockData(){
+        $this->createTableQueue();
+        $this->createTableMapping();
+    }
+
+    protected function createTableQueue(){
         $this->db->exec($this->sql['create_table_queue']);
         $stmt = $this->db->prepare($this->sql['add_to_queue']);
         $stmt->execute(array(321, 'src', 'dst', 1, 'queued'));
+    }
+
+    protected function createTableMapping(){
+        $this->db->exec($this->sql['create_table_response_mapper']);
+        $this->db->exec($this->sql['add_response_maps']);
     }
 
     public function tearDown(){
@@ -70,6 +80,4 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $parts = explode(']', $line);
         return trim($parts[1]);
     }
-
-
 }
