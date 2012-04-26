@@ -49,8 +49,6 @@ class Encoder {
     public function requestEncoding($source, $destination, $priority){
         $data = $this->config['xml_data'];
         $xml = $this->buildXml($data, $source, $destination);
-	echo '<pre>';
-	print_r($xml);
         $this->http_client->setParameterPost('xml', $xml);
         $out = $this->http_client->request();
         $out_text = $out->getBody();
