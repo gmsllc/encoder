@@ -1,4 +1,6 @@
-CREATE DATABASE if NOT EXISTS encoding_queue;
+USE encoding_queue;
+
+SET foreign_key_checks = 0;
 
 DROP TABLE if EXISTS queue;
 
@@ -20,17 +22,19 @@ CREATE TABLE provider(
 
 DROP TABLE if EXISTS response_mapper;
 
-CREATE TABLE mapper(
+CREATE TABLE response_mapper(
     provider_id int NOT NULL,
-    KEY_tag varchar(30) NOT NULL,
-    KEY_val varchar(30) NOT NULL,
+    key_tag varchar(30) NOT NULL,
+    key_val varchar(30) NOT NULL,
     mapping_tag varchar(30),
     mapping_val varchar(30),
     FOREIGN KEY (provider_id) REFERENCES provider(id)
 );
 
 INSERT INTO response_mapper
-    (provider_id, key_tag, key_value, mapping_key, mapping_value)
+    (provider_id, key_tag, key_val, mapping_tag, mapping_val)
 VALUES
     (1, 'status', 'finished', 'status', 'finished'),
-    (1, 'status', 'error', 'status', 'error')
+    (1, 'status', 'error', 'status', 'error');
+
+set foreign_key_checks = 1;
