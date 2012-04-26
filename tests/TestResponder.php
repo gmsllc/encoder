@@ -15,7 +15,9 @@ class TestResponder extends Zend_Test_PHPUnit_ControllerTestCase {
         $this->db = new PDO('sqlite:test.sqlite');
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->log_file = 'test.log';
-        $this->responder = new Responder($this->config, $this->db, $this->log_file);
+        $this->responder = new Responder(
+            1, $this->config, $this->db, $this->log_file);
+
         $this->createTablesAndMockData();
     }
 
