@@ -1,7 +1,8 @@
 <?php
 class Responder {
 
-    public function __construct($config, $db, $log_file=false){
+    public function __construct($provider, $config, $db, $log_file=false){
+        $this->provider = $provider;
         $this->config = $config;
         $this->sql = $this->config['sql'];
         $this->db = $db;
@@ -11,10 +12,19 @@ class Responder {
     public function handleResponse($xml){
         $xml = new SimpleXmlElement($xml);
         $stmt = $this->db->prepare($this->sql['update_status']);
-        $status = (string)$xml->status;
-        $media_id = (int)$xml->mediaId;
+        $status = $this->getMapping('status', (string)$xml->status);
+        $media_id = $this->getMapping('media_id', (int)$xml->mediaId);
         $this->logResponse($status, $media_id);
         $stmt->execute(array(':status' => $status, ':media_id' => $media_id));
+    }
+
+    protected function getMapping($provider_tag, $provider_val){
+        $stmt = $this->db->prepare($this->sql['get_mapping']);
+        $stmt->execute(array(
+            ':provider_id'  => $this->provider,
+            ':provider_tag' => $provider_tag,
+            ':provider_val' => $provider_val
+        ));
     }
 
     protected function logResponse($status, $media_id){
