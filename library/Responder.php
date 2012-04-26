@@ -25,6 +25,8 @@ class Responder {
             ':provider_tag' => $provider_tag,
             ':provider_val' => $provider_val
         ));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['mapping_val'];
     }
 
     protected function logResponse($status, $media_id){
