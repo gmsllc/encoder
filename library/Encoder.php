@@ -11,8 +11,8 @@ class Encoder {
 
     public function __construct($config, $http_client, $db){
         $this->config = $config;
-        $this->setupDbConnection($db);
-        $this->setUpHttpClient();
+        $this->http_client = $http_client;
+        $this->db = $db;
     }
 
     protected function setupDbConnection($db=false){
@@ -47,8 +47,8 @@ class Encoder {
     }
 
     public function requestEncoding($source, $destination, $priority){
-        $data = $this->config['xml_data'];
-        $xml = $this->buildXml($data, $source, $destination);
+        $static_data = $this->config['xml_data'];
+        $xml = $this->buildXml($static_data, $source, $destination);
         $this->http_client->setParameterPost('xml', $xml);
         $out = $this->http_client->request();
         $out_text = $out->getBody();
