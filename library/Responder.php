@@ -11,11 +11,9 @@ class Responder {
 
     public function handleResponse($xml){
         $this->logRawXml($xml);
-        $xml = new SimpleXmlElement($xml);
 
-        $status = $this->getMapping('status', (string)$xml->status);
-        $media_id = $this->getMapping('media_id', (int)$xml->mediaid);
-
+        $status = $this->getMapping($xml, 'status');
+        $media_id = $this->getMapping($xml, 'media_id');
         $stmt = $this->db->prepare($this->sql['update_status']);
         $stmt->execute(array(':status' => $status, ':media_id' => $media_id));
         $this->logResponse($status, $media_id);
@@ -33,17 +31,11 @@ class Responder {
         }
     }
 
-    protected function getMapping($provider_tag, $provider_val){
-        return $provider_val;
-        $stmt = $this->db->prepare($this->sql['get_mapping']);
-        $stmt->execute(array(
-            ':provider_id'  => $this->provider,
-            ':provider_tag' => $provider_tag,
-            ':provider_val' => $provider_val
-        ));
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $out = $result['mapping_val'];
-        return $out ? $out : $provider_val;
+    protected function getMapping($xml, $tag){
+        $mapping_info = $this->config['get_mapping'][$this->provider][$tag];
+        $xml =  $this->xmlToArray($xml);
+        eval("\$provider_tag = \$xml->$mapping_info;");
+        return $provider_tag;
     }
 
     public function informLloyd(){
@@ -51,6 +43,10 @@ class Responder {
         $subject = 'staging box encoder test';
         $message = 'I have own your ships now';
         mail($to, $subject, $message);
+    }
+
+    protected function xmlToArray($xml){
+        return json_decode(json_encode( (array) simplexml_load_string($xml))); 
     }
 
 }

@@ -11,15 +11,17 @@ require_once('Configuration.php');
 $config = new Configuration();
 $config = $config->getConfiguration();
 
-$db = new PDO('sqlite:test.sqlite');
+$db_config = $config['db_settings'];
+$host = $db_config['host'];
+$user = $db_config['username'];
+$pass = $db_config['password'];
+$db   = $db_config['dbname'];
+
+$db = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$sql = $config['sql'];
-$db->exec($sql['create_table_queue']);
-$stmt = $db->prepare($sql['add_to_queue']);
-
-$log_file = 'test.log';
-$responder = new Responder($config, $db, $log_file);
+$log_file = 'live.log';
+$responder = new Responder(1, $config, $db, $log_file);
 
 $xml = $_POST['xml'];
 
